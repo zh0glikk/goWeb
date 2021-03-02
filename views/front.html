@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js"></script>
+
+    <title>Front Page</title>
+</head>
+<body>
+    <form id="calcForm" >
+        <label for="number_1">Num1:</label>
+        <input name="number_1" id="number_1" type="text" title="num1"/><br>
+
+        <label for="number_2">Num2:</label>
+        <input name="number_2" id="number_2" type="text" title="num2"/><br>
+
+        <label for="operation_type">Operation Type:</label>
+        <input name="operation_type" id="operation_type" type="text" title="type" /><br>
+
+        <button type="submit" value="Submit" onclick="calculate()">Submit</button>
+    </form>
+    <div id="output"></div>
+</body>
+
+<script>
+    document.getElementById('calcForm').addEventListener('submit', (e) => {
+       e.preventDefault();
+    });
+
+    function calculate(){
+        var num1 = $('#number_1').val()
+        var num2 = $('#number_2').val()
+        var opType = $('#operation_type').val()
+
+        var xhr = $.ajax({
+            url: '/calc',
+            type: "post",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ Number1: parseInt(num1), Number2: parseInt(num2), OperationType: opType}),
+            dataType: 'json',
+            success: function(r) {
+                document.getElementById('output').innerHTML = ""
+                $('#output').append("Result: " + r);
+            }
+        });
+    }
+
+</script>
+</html>
+
