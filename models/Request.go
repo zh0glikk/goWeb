@@ -3,9 +3,9 @@ package models
 var operationTypes = []string{"+", "-", "*", "/"}
 
 type Request struct {
-	Number1 int
-	Number2 int
-	OperationType string
+	Number1 int `json:"number_1"`
+	Number2 int `json:"number_2"`
+	OperationType string `json:"operation_type"`
 }
 
 func ValidateOperationType(operationType string) bool {

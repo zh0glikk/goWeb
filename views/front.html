@@ -36,7 +36,7 @@
             url: '/calc',
             type: "post",
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({ Number1: parseInt(num1), Number2: parseInt(num2), OperationType: opType}),
+            data: JSON.stringify({ number_1: parseInt(num1), number_2: parseInt(num2), operation_type: opType}),
             dataType: 'json',
             success: function(r) {
                 document.getElementById('output').innerHTML = ""
