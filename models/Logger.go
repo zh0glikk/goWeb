@@ -6,20 +6,13 @@ import (
 	"net/http"
 )
 
-type Logger struct {
-	handler http.Handler
-}
+func MiddlewareLogger(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log := logrus.New()
 
-func NewLogger(handler http.Handler) *Logger {
-	return &Logger{handler: handler}
-}
+		contextWithLogger := context.WithValue(r.Context(), "log", log)
+		requestWithLogger := r.WithContext(contextWithLogger)
 
-
-func (lg *Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	log := logrus.New()
-
-	contextWithLogger := context.WithValue(r.Context(), "log", log)
-	requestWithLogger := r.WithContext(contextWithLogger)
-
-	lg.handler.ServeHTTP(w, requestWithLogger)
+		next.ServeHTTP(w,requestWithLogger)
+	})
 }

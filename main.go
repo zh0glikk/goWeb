@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
 	"goWeb/models"
 	"html/template"
@@ -71,16 +72,14 @@ func calculateResult(r *models.Request) int{
 }
 
 func main() {
-	m := http.NewServeMux()
+	r := chi.NewRouter()
 
+	r.Use(models.MiddlewareLogger)
 
-	m.HandleFunc("/", frontPageHander)
-	m.HandleFunc("/calc", calcHandler)
+	r.Get("/", frontPageHander)
+	r.Post("/calc", calcHandler)
 
-	wr := models.NewLogger(m)
-
-
-	log.Fatal(http.ListenAndServe(":8080", wr))
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
 
